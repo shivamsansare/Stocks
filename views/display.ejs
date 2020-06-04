@@ -36,9 +36,17 @@
                 </button>
             </form>
 
-            <input type="number" id="number" name="number" required>
+            <input type="number" id="number" name="number" placeholder="Group by" required>
             <button class="btn btn-success" onclick="myGraph(<%=JSON.stringify(price)%>)">
                 MyGraph
+            </button>
+            <br>
+            <br>
+            <input type="text" id="company" name="company" placeholder="Company" required>
+            <input type="number" id="g1" name="g1" placeholder="Group by" required>
+            <input type="number" id="g2" name="g2" placeholder="Group by" required>
+            <button class="btn btn-danger" onclick="combined(<%=JSON.stringify(price)%>)" style="margin-top:15px">
+                Combined
             </button>
         </center>
       
@@ -88,6 +96,13 @@
 
         <canvas id="myChart" width="900" height="400"></canvas> 
         
+        <br>
+        <br>
+        <hr>
+        <br>
+        <br>
+        <canvas id="myCharts" width="900" height="400"></canvas> 
+
         <br>
         <br>
         <hr>
@@ -322,6 +337,87 @@
             }, 
         });
 
+    }
+
+    function combined(price){
+        alert("Done");
+        var g1=parseInt(document.getElementById("g1").value);
+        var g2=parseInt(document.getElementById("g2").value);
+        var cinput=document.getElementById("company").value;
+        cinput=cinput.toUpperCase();
+        var ctxs = document.getElementById("myCharts"); 
+        var i=1;
+        var lab=[];
+        var datas=[];
+        var company=[];
+        var companydate=[];
+        var companyprice=[];
+        price.forEach(function(item){
+            if(item.company=cinput){
+                company[i]=item.company;
+                companydate[i]=item.date;
+                companyprice[i]=item.price;
+                i=i+1;
+            }
+        });
+        var k=0;
+        var colors=["red","blue","green","purple","black","brown","orange"];
+
+        i=1;
+        var sum=0;
+        var datas=[];
+        var dataset=[];
+        for(i=1;i<company.length;i++){
+            sum=sum+companyprice[i];
+            if(i>=g1){
+                datas[i]=sum/(parseInt(g1));
+                sum=sum-companyprice[i-g1+1];
+            }
+        }
+
+        var dataFirst = {
+                    label: "Group by "+g1,
+                    data: datas,
+                    lineTension: 0,
+                    fill: false,
+                    borderColor: colors[k]
+                };
+        k++;
+        dataset.push(dataFirst);
+
+        i=1;
+        sum=0;
+        datas=[];
+        for(i=1;i<company.length;i++){
+            sum=sum+companyprice[i];
+            if(i>=g2){
+                datas[i]=sum/(parseInt(g2));
+                sum=sum-companyprice[i-g2+1];
+            }
+        }
+
+
+        var dataFirst = {
+                    label: "Group by "+g2,
+                    data: datas,
+                    lineTension: 0,
+                    fill: false,
+                    borderColor: colors[k]
+                };
+        k++;
+        dataset.push(dataFirst);
+
+
+        var myLineChart = new Chart(ctxs, {
+            type: 'line',
+            data: 
+            { 
+                    labels: companydate, 
+                    datasets: dataset
+            }, 
+        });
+        
+        
     }
     
 
