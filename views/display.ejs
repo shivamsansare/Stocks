@@ -353,7 +353,7 @@
         var companydate=[];
         var companyprice=[];
         price.forEach(function(item){
-            if(item.company=cinput){
+            if(!cinput.localeCompare(item.company)){
                 company[i]=item.company;
                 companydate[i]=item.date;
                 companyprice[i]=item.price;
@@ -374,6 +374,7 @@
                 sum=sum-companyprice[i-g1+1];
             }
         }
+        console.log(datas);
 
         var dataFirst = {
                     label: "Group by "+g1,
