@@ -85,24 +85,21 @@ app.post("/uploads", upload.single('file'),function(req,res){
             }
             console.log(result.length);
             var i=0;
-            for(i=0;i<result.length-1;i++){
+            for(i=1;i<result.length-1;i++){
                 var company=result[i].symbol;
                 company=company.toUpperCase();
-                var newPrice={company:company,date: result[i].date,price: result[i].ltp};
-                //console.log(newPrice);
-                Prices.create(newPrice,function(err,newEntry){
-                if(err){
-                    console.log("hellp");
+                if(!company.localeCompare("")){
+                    var newPrice={company:company,date: result[i].date,price: result[i].ltp};
+                    //console.log(newPrice);
+                    Prices.create(newPrice,function(err,newEntry){
+                    if(err){
+                        console.log("hellp");
+                    }
+                    else{
+                    } 
+                    });
                 }
-                else{
-                }
-            });
             }
-            Prices.deleteMany({},function(req,res){
-                if(err){
-                    console.log(err);
-                }
-            });
             res.redirect("/display");
         });
     } 
