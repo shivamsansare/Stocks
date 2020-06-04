@@ -88,7 +88,7 @@ app.post("/uploads", upload.single('file'),function(req,res){
             for(i=1;i<result.length-1;i++){
                 var company=result[i].symbol;
                 company=company.toUpperCase();
-                if(company.localeCompare("")){
+                if(!company.localeCompare("")){
                     var newPrice={company:company,date: result[i].date,price: result[i].close};
                     //console.log(newPrice);
                     Prices.create(newPrice,function(err,newEntry){
@@ -123,8 +123,8 @@ app.get("*",function(req,res){
     res.send("Page not available");
 });
 
-const PORT=5000;
+//const PORT=5000;
 
-app.listen(PORT,function(req,res){
+app.listen(process.env.PORT,process.env.IP,function(req,res){
     console.log("hello");
 })
