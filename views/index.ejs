@@ -12,6 +12,7 @@
             border: 1px solid black;
             border-collapse: collapse;
           }
+          
         </style>
     </head>
     <body>
@@ -30,6 +31,14 @@
                     Submit
                 </button>
             </form>
+           
+            <form action="/uploads" method="POST" enctype="multipart/form-data">
+                <input type="file" id="file" name="file" required>
+                <button class="btn btn-warning">
+                    Submit File
+                </button>
+            </form>
+
             <form action="/display/delete?_method=DELETE" method="POST">
                 <input type="date" id="date" name="date" required>
                 <input type="text" id="company" name="company" placeholder="company" required>
@@ -37,6 +46,7 @@
                     Delete
                 </button>
             </form>
+
         </center>
     </body>
 </html>
