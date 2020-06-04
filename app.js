@@ -17,7 +17,7 @@ app.get("/",function(req,res){
 });
 
 app.get("/display",function(req,res){
-    Prices.find({}).sort({ company: 'asc',date:'asc' }).exec(function(err, found){
+    Prices.find({}).sort({ company: 'asc',date:'asc' }).exec(function(err,found){
         if(err){
             console.log(err);
         }
@@ -29,7 +29,9 @@ app.get("/display",function(req,res){
 
 app.post("/display",function(req,res){
     console.log(req.body.date);
-    var newPrice={company:req.body.company,date: req.body.date,price: req.body.number};
+    var company=req.body.company;
+    company=company.toUpperCase();
+    var newPrice={company:company,date: req.body.date,price: req.body.number};
     console.log(newPrice);
     Prices.create(newPrice,function(err,newEntry){
         if(err){
@@ -43,7 +45,9 @@ app.post("/display",function(req,res){
 
 app.delete("/display/delete",function(req,res){
     var date=req.body.date;
-    Prices.findOneAndRemove({date: date},function(err,sus){
+    var company=req.body.company;
+    company=company.toUpperCase();
+    Prices.findOneAndRemove({company:company,date: date},function(err,sus){
         console.log(sus);
         if(err){
             console.log(err);

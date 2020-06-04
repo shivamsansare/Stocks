@@ -103,102 +103,224 @@
         var lab=[];
         var datas=[];
         var company=[];
+        var companydate=[];
+        var companyprice=[];
         price.forEach(function(item){
             company[i]=item.company;
+            companydate[i]=item.date;
+            companyprice[i]=item.price;
             i=i+1;
         });
         i=1;
-        console.log(company);
+        //console.log(company);
 
-        for(i=1;i<=company.length;i=i+1){
+        var datasets=[]
+
+        var eachLabel=[];
+
+        lab=[];
+        var m=1;
+        for(i=1;i<=companydate.length;i++){
+            if(lab.includes(companydate[i])){
+
+            }
+            else{
+                lab[m]=companydate[i];
+                m=m+1;
+            }
+        }
+        lab.sort();
+        //console.log(lab);
+
+        var k=0;
+        var colors=["red","blue","green","purple","black","brown","orange"];
+        for(i=1;i<company.length;i=i+1){
             if((company[i]!=company[i+1]) ){
+                datas[lab.indexOf(companydate[i])]=companyprice[i];
                 var dataFirst = {
                     label: ""+company[i],
                     data: datas,
                     lineTension: 0,
                     fill: false,
-                    borderColor: 'red'
+                    borderColor: colors[k]
                 };
+                if(k==colors.length){
+                    k=0;
+                }
+                else{
+                    k=k+1;
+                }
+                datasets.push(dataFirst);
+                datas=[];
             }
             else{
+                datas[lab.indexOf(companydate[i])]=companyprice[i];
             }
         }
-        price.forEach(function(item){
-            lab[i]=item.date;
-            datas[i]=item.price;
-            i=i+1;
-        });
 
+        if(company[company.length] == company[company.length-1]){
+            datas[companydate[company.length]]=companyprice[company.length];
+            if(k==colors.length){
+                    k=0;
+                }
+                else{
+                    k=k+1;
+                }
+                var dataFirst = {
+                    label: ""+company[company.length],
+                    data: datas,
+                    lineTension: 0,
+                    fill: false,
+                    borderColor: colors[k]
+                };
+                datasets.push(dataFirst);
+                datas=[];
+        }
+       
+        else{
+            
+        }
 
+        //console.log(datasets);
+
+       
+    
         var myLineChart = new Chart(ctx, {
             type: 'line',
             data: 
             { 
                     labels: lab, 
-                    datasets: [ 
-                        {   label: 'Stocks Everyday', 
-                            fill: false,
-                            data: datas,
-                            lineTension: 0,           
-                            borderColor: "red",
-                            borderWidth : 3
-                        } 
-                    ] 
+                    datasets: datasets
             }, 
         });
     }
 
     function myGraph(price){
         var input=parseInt(document.getElementById("number").value);
+        console.log(input);
         alert("Displaying Requested graph for "+input+" days")
+        
+        var ctxm = document.getElementById("myChartm"); 
         var i=1;
         var lab=[];
         var datas=[];
+        var company=[];
+        var companydate=[];
+        var companyprice=[];
         price.forEach(function(item){
-            lab[i]=item.date;
-            datas[i]=item.price;
+            company[i]=item.company;
+            companydate[i]=item.date;
+            companyprice[i]=item.price;
             i=i+1;
         });
-
-        
-        labExtra=[];
         i=1;
-        datasExtra=[];
-        sum=0;
-        avg=0;
-        j=1;
-        var inp=input-1;
-        for(i=1;i<datas.length;i=i+1){
-            sum=sum+datas[i];
-            if(i>inp){
-                labExtra[j]=lab[i];
-                datasExtra[j]=sum/(input);
-                sum=sum-datas[i-inp];
-                j=j+1;
+        //console.log(company);
+
+        var datasets=[]
+
+        var eachLabel=[];
+
+        lab=[];
+        var m=1;
+        for(i=1;i<=companydate.length;i++){
+            if(lab.includes(companydate[i])){
+
+            }
+            else{
+                lab[m]=companydate[i];
+                m=m+1;
+            }
+        }
+        lab.sort();
+        //console.log(lab);
+
+        var k=0;
+        var colors=["red","blue","green","purple","black","brown","orange"];
+        for(i=1;i<company.length;i=i+1){
+            if((company[i]!=company[i+1]) ){
+                datas[lab.indexOf(companydate[i])]=companyprice[i];
+                console.log(datas);
+                var inp=input-1;
+                var sum=0;
+                var dataExtras=[];
+                for(var p=0;p<datas.length;p=p+1){
+                    sum=sum+datas[p];
+                    if(p>=inp){
+                        dataExtras[p]=sum/input;
+                        sum=sum-datas[p-inp];
+                    }
+                }
+                console.log(dataExtras);
+                
+                var dataFirst = {
+                    label: ""+company[i],
+                    data: dataExtras,
+                    lineTension: 0,
+                    fill: false,
+                    borderColor: colors[k]
+                };
+                if(k==colors.length){
+                    k=0;
+                }
+                else{
+                    k=k+1;
+                }
+                datasets.push(dataFirst);
+                datas=[];
+            }
+            else{
+                datas[lab.indexOf(companydate[i])]=companyprice[i];
             }
         }
 
-        console.log(datasExtra);
-        console.log(labExtra);
+        if(company[company.length] == company[company.length-1]){
+            datas[companydate[company.length]]=companyprice[company.length];
+            if(k==colors.length){
+                    k=0;
+                }
+                else{
+                    k=k+1;
+                }
+                var inp=input-1;
+                var sum=0;
+                var dataExtras=[];
+                for(var p=0;p<datas.length;p=p+1){
+                    sum=sum+datas[p];
+                    if(p>=inp){
+                        dataExtras[p]=sum/input;
+                        sum=sum-datas[p-inp];
+                    }
+                }
+                console.log(dataExtras);
+                
+                var dataFirst = {
+                    label: ""+company[company.length],
+                    data: dataExtras,
+                    lineTension: 0,
+                    fill: false,
+                    borderColor: colors[k]
+                };
+                datasets.push(dataFirst);
+                datas=[];
+        }
+       
+        else{
+            
+        }
 
-        var ctxm = document.getElementById("myChartm"); 
+        console.log(datasets);
 
+       
+    
         var myLineChart = new Chart(ctxm, {
             type: 'line',
             data: 
             { 
-                    labels: labExtra, 
-                    datasets: [ 
-                        {   label: 'Stocks every '+input+' days', 
-                            fill: false,
-                            data: datasExtra,
-                            lineTension: 0,           
-                            borderColor: "blue",
-                            borderWidth : 3
-                        } 
-                    ] 
+                    labels: lab, 
+                    datasets: datasets
             }, 
         });
+
     }
     
 
