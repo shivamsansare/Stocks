@@ -1,0 +1,181 @@
+<html>
+    <head>
+        <title>
+            Stocks
+        </title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"> </script> 
+        <style>
+            table,th,td,hr{
+            border: 1px solid black;
+            border-collapse: collapse;
+          }
+          thead{
+            border: 2px solid black;
+            border-collapse: collapse;
+          }
+          th,td{
+              padding:10px;
+          }
+          table{
+              margin-left:15px;
+              margin-bottom:15px;
+          }
+        </style>
+    </head>
+    <body onload="calculate(<%=JSON.stringify(price)%>)">
+        <br>
+        <center>
+
+            <form action="/" method="GET">
+                <button class="btn btn-primary">
+                    Back
+                </button>
+            </form>
+
+            <input type="number" id="number" name="number" required>
+            <button class="btn btn-success" onclick="myGraph(<%=JSON.stringify(price)%>)">
+                MyGraph
+            </button>
+        </center>
+      
+     
+        <br>
+        <div class="row">
+            <div class="col-md-1 col-sm-2">
+                
+            </div>
+            <div class="col-md-4 col-sm-8">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>
+                                Date
+                            </td>
+                            <td>
+                                Price
+                            </td>
+                        </tr>
+                    </thead>
+                    <% price.forEach(function(item){ %>
+                        <tr>
+                            <td>
+                                <%= item.date %>
+                            </td>
+                            <td>
+                                <%= item.price %>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </table>
+            </div>
+        </div>
+
+        <br>
+        <br>
+        <hr>
+        <br>
+        <hr>
+
+        <canvas id="myChart" width="900" height="400"></canvas> 
+        
+        <br>
+        <br>
+        <hr>
+        <br>
+        <br>
+        <canvas id="myChartm" width="900" height="400"></canvas> 
+
+    </body>
+    <script type="text/javascript"> 
+
+    function calculate(price){
+        var ctx = document.getElementById("myChart"); 
+        var i=1;
+        var lab=[];
+        var datas=[];
+        price.forEach(function(item){
+            lab[i]=item.date;
+            datas[i]=item.price;
+            i=i+1;
+        });
+
+
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: 
+            { 
+                    labels: lab, 
+                    datasets: [ 
+                        {   label: 'Stocks Everyday', 
+                            fill: false,
+                            data: datas,
+                            lineTension: 0,           
+                            borderColor: "red",
+                            borderWidth : 3
+                        } 
+                    ] 
+            }, 
+        });
+    }
+
+    function myGraph(price){
+        var input=parseInt(document.getElementById("number").value);
+        alert("Displaying Requested graph for "+input+" days")
+        var i=1;
+        var lab=[];
+        var datas=[];
+        price.forEach(function(item){
+            lab[i]=item.date;
+            datas[i]=item.price;
+            i=i+1;
+        });
+
+        
+        labExtra=[];
+        i=1;
+        datasExtra=[];
+        sum=0;
+        avg=0;
+        j=1;
+        var inp=input-1;
+        for(i=1;i<datas.length;i=i+1){
+            sum=sum+datas[i];
+            if(i>inp){
+                labExtra[j]=lab[i];
+                datasExtra[j]=sum/(input);
+                sum=sum-datas[i-inp];
+                j=j+1;
+            }
+        }
+
+        console.log(datasExtra);
+        console.log(labExtra);
+
+        var ctxm = document.getElementById("myChartm"); 
+
+        var myLineChart = new Chart(ctxm, {
+            type: 'line',
+            data: 
+            { 
+                    labels: labExtra, 
+                    datasets: [ 
+                        {   label: 'Stocks every '+input+' days', 
+                            fill: false,
+                            data: datasExtra,
+                            lineTension: 0,           
+                            borderColor: "blue",
+                            borderWidth : 3
+                        } 
+                    ] 
+            }, 
+        });
+    }
+    
+
+    </script> 
+          
+    </body> 
+</html>
