@@ -17,7 +17,7 @@ app.get("/",function(req,res){
 });
 
 app.get("/display",function(req,res){
-    Prices.find({},function(err,found){
+    Prices.find({}).sort({ company: 'asc',date:'asc' }).exec(function(err,found){
         if(err){
             console.log(err);
         }
