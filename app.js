@@ -128,6 +128,6 @@ app.get("*",function(req,res){
 
 //const PORT=5000;
 
-app.listen(process.env.PORT.process.env.IP,function(req,res){
+app.listen(process.env.PORT,process.env.IP,function(req,res){
     console.log("hello");
 })
