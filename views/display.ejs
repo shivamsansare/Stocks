@@ -42,12 +42,14 @@
             </button>
             <br>
             <br>
-            <input type="text" id="company" name="company" placeholder="Company" required>
-            <input type="number" id="g1" name="g1" placeholder="Group by" required>
-            <input type="number" id="g2" name="g2" placeholder="Group by" required>
-            <button class="btn btn-danger" onclick="combined(<%=JSON.stringify(price)%>)">
-                Combined
-            </button>
+            <form>
+                <input type="text" id="company" name="company" placeholder="Company" required>
+                <input type="number" id="g1" name="g1" placeholder="Group by" required>
+                <input type="number" id="g2" name="g2" placeholder="Group by" required>
+                <button class="btn btn-danger" onclick="combined(<%=JSON.stringify(price)%>)">
+                    Combined
+                </button>
+            </form>     
         </center>
       
      
