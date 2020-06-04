@@ -5,7 +5,7 @@ var express=require("express");
     methodOverride=require("method-override"),
     mongoose=require("mongoose");
 
-mongoose.connect("mongodb+srv://root:ait@cluster0-z0ft9.mongodb.net/stocks?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://root:ait@cluster0-z0ft9.mongodb.net/stock?retryWrites=true&w=majority")
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine","ejs");
@@ -17,7 +17,7 @@ app.get("/",function(req,res){
 });
 
 app.get("/display",function(req,res){
-    Prices.find({},function(err,found){
+    Prices.find({}).sort({ company: 'asc',date:'asc' }).exec(function(err, found){
         if(err){
             console.log(err);
         }
@@ -29,7 +29,7 @@ app.get("/display",function(req,res){
 
 app.post("/display",function(req,res){
     console.log(req.body.date);
-    var newPrice={date: req.body.date,price: req.body.number};
+    var newPrice={company:req.body.company,date: req.body.date,price: req.body.number};
     console.log(newPrice);
     Prices.create(newPrice,function(err,newEntry){
         if(err){
@@ -58,8 +58,8 @@ app.get("*",function(req,res){
     res.send("Page not available");
 });
 
-//const PORT=5000;
+const PORT=5000;
 
-app.listen(process.env.PORT,process.env.IP,function(req,res){
+app.listen(PORT,function(req,res){
     console.log("hello");
 })

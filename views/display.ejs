@@ -57,6 +57,9 @@
                             <td>
                                 Price
                             </td>
+                            <td>
+                                Company
+                            </td>
                         </tr>
                     </thead>
                     <% price.forEach(function(item){ %>
@@ -66,6 +69,9 @@
                             </td>
                             <td>
                                 <%= item.price %>
+                            </td>
+                            <td>
+                                <%= item.company %>
                             </td>
                         </tr>
                     <% }) %>
@@ -96,6 +102,27 @@
         var i=1;
         var lab=[];
         var datas=[];
+        var company=[];
+        price.forEach(function(item){
+            company[i]=item.company;
+            i=i+1;
+        });
+        i=1;
+        console.log(company);
+
+        for(i=1;i<=company.length;i=i+1){
+            if((company[i]!=company[i+1]) ){
+                var dataFirst = {
+                    label: ""+company[i],
+                    data: datas,
+                    lineTension: 0,
+                    fill: false,
+                    borderColor: 'red'
+                };
+            }
+            else{
+            }
+        }
         price.forEach(function(item){
             lab[i]=item.date;
             datas[i]=item.price;
