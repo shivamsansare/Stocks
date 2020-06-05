@@ -29,13 +29,12 @@
     <body onload="calculate(<%=JSON.stringify(price)%>)">
         <br>
         <center>
-
-            <form action="/" method="GET">
-                <button class="btn btn-primary">
-                    Back
-                </button>
-            </form>
-
+            <div class="row container">
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+                <a href="/" class="button btn btn-primary">Back</a>
+                <input id="search" class="form-control ml-auto" type="text" name="search" placeholder="&#xF002; Search" style="width:30%;font-family:Arial, FontAwesome" onkeyup="search()">                   
+            </div>
+            <br>
             <input type="number" id="number" name="number" placeholder="Group by" required>
             <button class="btn btn-success" onclick="myGraph(<%=JSON.stringify(price)%>)">
                 MyGraph
@@ -80,7 +79,7 @@
                 
             </div>
             <div class="col-md-4 col-sm-8">
-                <table>
+                <table id="searching">
                     <thead>
                         <tr>
                             <td>
@@ -156,7 +155,7 @@
         //console.log(lab);
 
         var k=0;
-        var colors=["red","blue","green","purple","black","brown","orange"];
+        var colors=["red","blue","green","purple","black","brown","orange","#ff002b","#000066","#003300","#003366"];
         for(i=1;i<company.length;i=i+1){
             if((company[i]!=company[i+1]) ){
                 datas[lab.indexOf(companydate[i])]=companyprice[i];
@@ -258,7 +257,7 @@
         //console.log(lab);
 
         var k=0;
-        var colors=["red","blue","green","purple","black","brown","orange"];
+        var colors=["red","blue","green","purple","black","brown","orange","#ff002b","#000066","#003300","#003366"];
         for(i=1;i<company.length;i=i+1){
             if((company[i]!=company[i+1]) ){
                 datas[lab.indexOf(companydate[i])]=companyprice[i];
@@ -368,7 +367,7 @@
             }
         });
         var k=0;
-        var colors=["red","blue","green","purple","black","brown","orange"];
+        var colors=["red","blue","green","purple","black","brown","orange","#ff002b","#000066","#003300","#003366"];
 
         i=1;
         var sum=0;
@@ -426,6 +425,25 @@
         });
         
         
+    }
+
+    const search=()=>{
+        let filter=document.getElementById('search').value.toUpperCase();
+        let searching=document.getElementById('searching');
+        let tr=searching.getElementsByTagName('tr');
+        
+        for(var i=0;i<tr.length;i++){
+            let td=tr[i].getElementsByTagName('td')[0];
+            if(td){
+                let textValue=td.textContent || td.innerHTML;
+                if(textValue.toUpperCase().indexOf(filter) > -1){
+                   tr[i].style.display="";
+                }
+                else{
+                    tr[i].style.display="None";
+                }
+            }
+        }
     }
     
 
