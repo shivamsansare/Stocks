@@ -88,7 +88,9 @@ app.post("/uploads", upload.single('file'),function(req,res){
             for(i=1;i<result.length;i++){
                 var company=result[i].symbol;
                 company=company.toUpperCase();
-                    var newPrice={company:company,date: result[i].date,price: result[i].close};
+                var str=result[i].close;
+                var price=parseFloat(str.replace(/,/g, ""));
+                    var newPrice={company:company,date: result[i].date,price:price};
                     //console.log(newPrice);
                     Prices.create(newPrice,function(err,newEntry){
                     if(err){
