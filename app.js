@@ -85,7 +85,7 @@ app.post("/uploads", upload.single('file'),function(req,res){
             }
             console.log(result.length);
             var i=0;
-            for(i=1;i<result.length-1;i++){
+            for(i=1;i<result.length;i++){
                 var company=result[i].symbol;
                 company=company.toUpperCase();
                 if(company.localeCompare("")){
