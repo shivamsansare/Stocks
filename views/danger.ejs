@@ -22,11 +22,18 @@
                 <input type="text" id="company" name="company" placeholder="Original Company" required>
                 <input type="text" id="company1" name="company1" placeholder="Update Company" required>
                 <button class="btn btn-warning">
-                    Submit
+                    Update
                 </button>
             </form>
            
-            <form action="/delete" method="POST">
+            <form action="/danger/deleteCompany?_method=DELETE" method="POST">
+                <input type="text" id="company" name="company" placeholder="Delete Company" required>
+                <button class="btn btn-danger">
+                    Delete
+                </button>
+            </form>
+
+            <form action="/danger/delete?_method=DELETE" method="POST">
                 <button class="btn btn-danger">
                     Delete Everything!!
                 </button>

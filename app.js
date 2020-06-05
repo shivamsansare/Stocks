@@ -123,11 +123,21 @@ app.put("/danger/edit",function(req,res){
 
 app.get("/danger",function(req,res){
     res.render("danger");
-
 });
 
-app.post("/danger/delete",function(req,res){
+app.delete("/danger/delete",function(req,res){
     Prices.remove({},function(err,del){
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.redirect("/");
+        }
+    })
+});
+
+app.delete("/danger/deleteCompany",function(req,res){
+    Prices.remove({company:req.body.company.toUpperCase()},function(err,del){
         if(err){
             console.log(err);
         }
