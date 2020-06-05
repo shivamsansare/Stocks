@@ -109,7 +109,7 @@ app.post("/uploads", upload.single('file'),function(req,res){
 });
 
 app.put("/danger/edit",function(req,res){
-    Prices.findOneAndUpdate({company:req.body.company.toUpperCase(),date:req.body.date,price:req.body.number},{company:req.body.company1.toUpperCase(),date:req.body.date1,price:req.body.number1},function(err,up){
+    Prices.updateMany({company:req.body.company.toUpperCase()},{company:req.body.company1.toUpperCase()},function(err,up){
         if(err){
             console.log(err);
             res.redirect("/danger");
@@ -120,8 +120,10 @@ app.put("/danger/edit",function(req,res){
     })
 });
 
+
 app.get("/danger",function(req,res){
     res.render("danger");
+
 });
 
 app.post("/danger/delete",function(req,res){
