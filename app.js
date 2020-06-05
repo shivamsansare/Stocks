@@ -50,7 +50,7 @@ app.post("/display",function(req,res){
     });
 });
 
-app.delete("/display/delete",function(req,res){
+app.delete("/delete",function(req,res){
     var date=req.body.date;
     var company=req.body.company;
     company=company.toUpperCase();
@@ -108,17 +108,29 @@ app.post("/uploads", upload.single('file'),function(req,res){
     }
 });
 
-app.get("/delete",function(req,res){
-    res.render("delete");
+app.put("/danger/edit",function(req,res){
+    Prices.findOneAndUpdate({company:req.body.company.toUpperCase(),date:req.body.date,price:req.body.number},{company:req.body.company1.toUpperCase(),date:req.body.date1,price:req.body.number1},function(err,up){
+        if(err){
+            console.log(err);
+            res.redirect("/danger");
+        }
+        else{
+            res.redirect("/");
+        }
+    })
 });
 
-app.post("/delete",function(req,res){
+app.get("/danger",function(req,res){
+    res.render("danger");
+});
+
+app.post("/danger/delete",function(req,res){
     Prices.remove({},function(err,del){
         if(err){
             console.log(err);
         }
         else{
-            res.redirect("/display");
+            res.redirect("/");
         }
     })
 });
