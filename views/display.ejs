@@ -24,20 +24,25 @@
               margin-bottom:15px;
           }
           
+          a { 
+            color: inherit; 
+        } 
+
+
         </style>
     </head>
     <body onload="calculate(<%=JSON.stringify(price)%>)">
         <br>
         <center>
-            <div class="row container">
+            <div class="row container form-inline">
                 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
                 <a href="/" class="button btn btn-primary">Back</a>
-                <input id="search" class="form-control ml-auto" type="text" name="search" placeholder="&#xF002; Search" style="width:30%;font-family:Arial, FontAwesome" onkeyup="search()">                   
+                <a href="#br" class="form-control ml-auto button btn btn-warning">Table</a>
             </div>
             <br>
             <input type="number" id="number" name="number" placeholder="Group by" required>
             <button class="btn btn-success" onclick="myGraph(<%=JSON.stringify(price)%>)">
-                MyGraph
+                <a href="#myChartm">MyGraph</a>
             </button>
             <br>
             <br>
@@ -45,7 +50,7 @@
                 <input type="number" id="g1" name="g1" placeholder="Group by" required>
                 <input type="number" id="g2" name="g2" placeholder="Group by" required>
                 <button class="btn btn-danger" onclick="combined(<%=JSON.stringify(price)%>)">
-                    Combined
+                    <a href="#myCharts">Combined</a>
                 </button>
         </center>
       
@@ -72,8 +77,12 @@
         <br>
         <hr>
         <br>
+        <br id="br">
+        <div class="row container">
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+            <input id="search" class="form-control ml-auto" type="text" name="search" placeholder="&#xF002; Search" style="width:30%;font-family:Arial, FontAwesome" onkeyup="search()">                   
+        </div>
         <br>
-
         <div class="row">
             <div class="col-md-1 col-sm-2">
                 
@@ -112,9 +121,7 @@
 
         <br>
         <br>
-        <hr>
         <br>
-        <hr>
 
     </body>
     <script type="text/javascript"> 
@@ -434,9 +441,11 @@
         
         for(var i=0;i<tr.length;i++){
             let td=tr[i].getElementsByTagName('td')[0];
+            let td2=tr[i].getElementsByTagName('td')[2];
             if(td){
                 let textValue=td.textContent || td.innerHTML;
-                if(textValue.toUpperCase().indexOf(filter) > -1){
+                let textValue2=td2.textContent || td2.innerHTML;
+                if(textValue.toUpperCase().indexOf(filter) > -1 || textValue2.toUpperCase().indexOf(filter) > -1){
                    tr[i].style.display="";
                 }
                 else{
