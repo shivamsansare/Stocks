@@ -9,7 +9,7 @@ var express=require("express");
 var xlstojson = require("xls-to-json-lc");
 var xlsxtojson = require("xlsx-to-json-lc");
 
-mongoose.connect("mongodb+srv://root:ait@cluster0-z0ft9.mongodb.net/stock?retryWrites=true&w=majority")
+mongoose.connect("<Enter Database>")
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine","ejs");
