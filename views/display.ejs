@@ -41,17 +41,21 @@
             </div>
             <br>
             <input type="number" id="number" name="number" placeholder="Group by" required>
-            <button class="btn btn-success" onclick="myGraph(<%=JSON.stringify(price)%>)">
-                <a href="#myChartm">MyGraph</a>
-            </button>
+            <a href="#myChartm">
+                <button class="btn btn-success" onclick="myGraph(<%=JSON.stringify(price)%>)">
+                    MyGraph
+                </button>
+            </a>
             <br>
             <br>
                 <input type="text" id="company" name="company" placeholder="Company" required>
                 <input type="number" id="g1" name="g1" placeholder="Group by" required>
                 <input type="number" id="g2" name="g2" placeholder="Group by" required>
-                <button class="btn btn-danger" onclick="combined(<%=JSON.stringify(price)%>)">
-                    <a href="#myCharts">Combined</a>
-                </button>
+                <a href="#myCharts">
+                    <button class="btn btn-danger" onclick="combined(<%=JSON.stringify(price)%>)">
+                    Combined
+                    </button>
+                </a>
         </center>
       
      
@@ -390,7 +394,7 @@
         console.log(datas);
 
         var dataFirst = {
-                    label: "Group by "+g1+" "+cinput,
+                    label: "Group of "+cinput+" by "+g1,
                     data: datas,
                     lineTension: 0,
                     fill: false,
@@ -412,7 +416,7 @@
 
 
         var dataFirst = {
-                    label: "Group by "+g2+" "+cinput,
+                    label: "Group of "+cinput+" by "+g2,
                     data: datas,
                     lineTension: 0,
                     fill: false,
