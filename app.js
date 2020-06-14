@@ -4,12 +4,13 @@ var express=require("express");
     Prices=require("./models/prices.js"),
     methodOverride=require("method-override"),
     multer = require('multer'),
+    keys=require("./keys");
     mongoose=require("mongoose");
 
 var xlstojson = require("xls-to-json-lc");
 var xlsxtojson = require("xlsx-to-json-lc");
 
-mongoose.connect("<Enter Database")
+mongoose.connect(keys.key.mongoDb);
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine","ejs");

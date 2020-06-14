@@ -7,6 +7,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"> </script> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <style>
             table,th,td,hr,input{
             border: 1px solid black;
@@ -32,12 +33,17 @@
         </style>
     </head>
     <body onload="calculate(<%=JSON.stringify(price)%>)">
-        <br>
+        <br id="center">
         <center>
             <div class="row container form-inline">
                 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
                 <a href="/" class="button btn btn-primary">Back</a>
-                <a href="#br" class="form-control ml-auto button btn btn-warning">Table</a>
+                <hr>
+                <a href="#br">
+                    <button class="btn btn-warning" onclick="table()">
+                        Table
+                    </button>
+                </a>
             </div>
             <br>
             <input type="number" id="number" name="number" placeholder="Group by" required>
@@ -61,30 +67,72 @@
      
         <br>
         <br>
-        
-        <canvas id="myChart" width="900" height="400"></canvas> 
-        
-        <br>
-        <br>
-        <hr>
-        <br>
-        <br>
-        <canvas id="myCharts" width="900" height="400"></canvas> 
+        <div>
+            <canvas id="myChart" width="900" height="400"></canvas> 
 
+        </div>
+        
         <br>
         <br>
-        <hr>
-        <br>
-        <br>
-        <canvas id="myChartm" width="900" height="400"></canvas> 
-        <br>
-        <br>
-        <hr>
+        
+        <div id="hr1">
+            <hr> 
+            <br>
+            <div class="row">
+                <div class="col-md-11">
+
+                </div>
+                <div class="container col-md-1 form-inline">
+                    <br>
+                    <a href="#center">
+                        <button class="btn btn-danger form-control ml-auto" onclick="cancelGraph1()">
+                            X
+                        </button>
+                    </a>
+                        
+                </div>
+            </div>
+            
+            <br>
+            <canvas id="myCharts" width="900" height="400"></canvas> 
+            <br>
+            <br>
+        </div>
+
+        <div id="hr2">
+            <hr> 
+            <br>
+            <div class="row">
+                <div class="col-md-11">
+
+                </div>
+                <div class="container col-md-1 form-inline">
+                    <br>
+                    <a href="#center">
+                        <button class="btn btn-danger form-control ml-auto" onclick="cancelGraph2()">
+                            X
+                        </button>
+                    </a>
+                </div>
+            </div>
+            
+            <br>
+            <canvas id="myChartm" width="900" height="400"></canvas> 
+            <br>
+            <br>
+        </div>
+       
+        <hr id="hr3">
         <br>
         <br id="br">
-        <div class="row container">
+        <div class="row container" id="search-div">
             <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
             <input id="search" class="form-control ml-auto" type="text" name="search" placeholder="&#xF002; Search" style="width:30%;font-family:Arial, FontAwesome" onkeyup="search()">                   
+            <a href="#center">
+                <button class="btn btn-danger" onclick="undoTable()">
+                    X
+                </button>
+            </a>
         </div>
         <br>
         <div class="row">
@@ -130,7 +178,34 @@
     </body>
     <script type="text/javascript"> 
 
+    function table(){
+        $("#searching").show();
+        $("#search-div").show();
+        $("#hr3").show();
+    }
+
+    function undoTable(){
+        $("#searching").hide();
+        $("#search-div").hide();
+        $("#hr3").hide();
+    }
+
+    function cancelGraph1(){
+        $("#hr1").hide();
+    }
+
+    function cancelGraph2(){
+        $("#hr2").hide();
+    }
+
     function calculate(price){
+        $("#myChartm").hide();
+        $("#myCharts").hide();
+        $("#searching").hide();
+        $("#search-div").hide();
+        $("#hr1").hide();
+        $("#hr2").hide();
+        $("#hr3").hide();
         var ctx = document.getElementById("myChart"); 
         var i=1;
         var lab=[];
@@ -229,8 +304,10 @@
     }
 
     function myGraph(price){
+        $("#myChartm").show();
+        $("#hr2").show();
         var input=parseInt(document.getElementById("number").value);
-        console.log(input);
+        //console.log(input);
         alert("Displaying Requested graph for "+input+" days")
         
         var ctxm = document.getElementById("myChartm"); 
@@ -272,18 +349,23 @@
         for(i=1;i<company.length;i=i+1){
             if((company[i]!=company[i+1]) ){
                 datas[lab.indexOf(companydate[i])]=companyprice[i];
-                console.log(datas);
+                //console.log(datas);
+                //console.log("hello");
                 var inp=input-1;
                 var sum=0;
                 var dataExtras=[];
-                for(var p=0;p<datas.length;p=p+1){
-                    sum=sum+datas[p];
-                    if(p>=inp){
-                        dataExtras[p]=sum/input;
-                        sum=sum-datas[p-inp];
+                var m=0;
+                while(datas[m]==null){
+                    m=m+1;
+                }
+                for(var p=m;p<datas.length;p=p+1){
+                    sum=sum+datas[parseInt(p)];
+                    if(parseInt(p-m)>=parseInt(inp)){
+                        dataExtras[parseInt(p)]=sum/parseInt(input);
+                        sum=sum-datas[parseInt(p)-parseInt(inp)];
                     }
                 }
-                console.log(dataExtras);
+                //console.log(dataExtras);
                 
                 var dataFirst = {
                     label: ""+company[i],
@@ -318,13 +400,13 @@
                 var sum=0;
                 var dataExtras=[];
                 for(var p=0;p<datas.length;p=p+1){
-                    sum=sum+datas[p];
+                    sum=sum+datas[parseInt(p)];
                     if(p>=inp){
-                        dataExtras[p]=sum/input;
-                        sum=sum-datas[p-inp];
+                        dataExtras[parseInt(p)]=sum/input;
+                        sum=sum-datas[parseInt(p)-parseInt(inp)];
                     }
                 }
-                console.log(dataExtras);
+                //console.log(dataExtras);
                 
                 var dataFirst = {
                     label: ""+company[company.length],
@@ -341,7 +423,7 @@
             
         }
 
-        console.log(datasets);
+        //console.log(datasets);
 
        
     
@@ -357,6 +439,8 @@
     }
 
     function combined(price){
+        $("#myCharts").show();
+        $("#hr1").show();
         alert("Done");
         var g1=parseInt(document.getElementById("g1").value);
         var g2=parseInt(document.getElementById("g2").value);
@@ -391,7 +475,7 @@
                 sum=sum-companyprice[i-g1+1];
             }
         }
-        console.log(datas);
+        //console.log(datas);
 
         var dataFirst = {
                     label: "Group of "+cinput+" by "+g1,
