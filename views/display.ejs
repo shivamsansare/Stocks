@@ -57,6 +57,8 @@
                 <input type="text" id="company" name="company" placeholder="Company" required>
                 <input type="number" id="g1" name="g1" placeholder="Group by" required>
                 <input type="number" id="g2" name="g2" placeholder="Group by" required>
+                <input type="number" id="g3" name="g3" placeholder="Group by" required>
+                <input type="number" id="g4" name="g4" placeholder="Group by" required>
                 <a href="#myCharts">
                     <button class="btn btn-danger" onclick="combined(<%=JSON.stringify(price)%>)">
                     Combined
@@ -444,6 +446,8 @@
         alert("Done");
         var g1=parseInt(document.getElementById("g1").value);
         var g2=parseInt(document.getElementById("g2").value);
+        var g3=parseInt(document.getElementById("g3").value);
+        var g4=parseInt(document.getElementById("g4").value);
         var cinput=document.getElementById("company").value;
         cinput=cinput.toUpperCase();
         var ctxs = document.getElementById("myCharts"); 
@@ -461,6 +465,7 @@
                 i=i+1;
             }
         });
+        //console.log(companydate[1]);
         var k=0;
         var colors=["red","blue","green","purple","black","brown","orange","#ff002b","#000066","#003300","#003366"];
 
@@ -475,7 +480,6 @@
                 sum=sum-companyprice[i-g1+1];
             }
         }
-        //console.log(datas);
 
         var dataFirst = {
                     label: "Group of "+cinput+" by "+g1,
@@ -509,6 +513,51 @@
         k++;
         dataset.push(dataFirst);
 
+        
+        i=1;
+        sum=0;
+        datas=[];
+        for(i=1;i<company.length;i++){
+            sum=sum+companyprice[i];
+            if(i>=g3){
+                datas[i]=sum/(parseInt(g3));
+                sum=sum-companyprice[i-g3+1];
+            }
+        }
+
+
+        var dataFirst = {
+                    label: "Group of "+cinput+" by "+g3,
+                    data: datas,
+                    lineTension: 0,
+                    fill: false,
+                    borderColor: colors[k]
+                };
+        k++;
+        dataset.push(dataFirst);
+
+        
+        i=1;
+        sum=0;
+        datas=[];
+        for(i=1;i<company.length;i++){
+            sum=sum+companyprice[i];
+            if(i>=g4){
+                datas[i]=sum/(parseInt(g4));
+                sum=sum-companyprice[i-g4+1];
+            }
+        }
+
+
+        var dataFirst = {
+                    label: "Group of "+cinput+" by "+g4,
+                    data: datas,
+                    lineTension: 0,
+                    fill: false,
+                    borderColor: colors[k]
+                };
+        k++;
+        dataset.push(dataFirst);
 
         var myLineChart = new Chart(ctxs, {
             type: 'line',

@@ -4,7 +4,8 @@ var express=require("express");
     Prices=require("./models/prices.js"),
     methodOverride=require("method-override"),
     multer = require('multer'),
-    keys=require("./keys");
+    request=require("request"),
+    keys=require("./keys"),
     mongoose=require("mongoose");
 
 var xlstojson = require("xls-to-json-lc");
@@ -149,6 +150,28 @@ app.delete("/danger/deleteCompany",function(req,res){
     })
 });
 
+// app.get("/api",function(req,res){
+//     stockUrl="https://fcsapi.com/api-v2/stock/history?id=63611&period=1d&from=2019-12-31T23:00&to=2020-07-05T23:00&access_key="+keys.key.fcsApiKey;
+//     request({
+//         url:stockUrl,
+//         json:true
+//         },function(error,response,body){
+            
+//             for(var i=0;i<body.response.length;i++){
+//                 var newPrice={company:"TATA MOTOR",date:body.response[i].tm,price:body.response[i].c};
+//                 Prices.create(newPrice,function(err,newEntry){
+//                     if(err){
+//                         console.log("New");
+//                     }
+//                     else{
+//                     } 
+//                 });
+//             }
+//             res.redirect("/display");
+//         }
+//     );
+// });
+
 app.get("*",function(req,res){
     res.send("Page not available");
 });
@@ -156,5 +179,29 @@ app.get("*",function(req,res){
 //const PORT=5000;
 
 app.listen(process.env.PORT,process.env.IP,function(req,res){
+    // setInterval(function(){
+    //     stockUrl="https://fcsapi.com/api-v2/stock/latest?id=63798,63607,63593,64008,63596,63611&access_key="+keys.key.fcsApiKey;
+    //     request({
+    //         url:stockUrl,
+    //         json:true
+    //         },function(error,response,body){
+    //             var stock=["TATA POWER","SBI","ICICI","IBVENTURES","ITC","TATA MOTOR"];
+    //             for(var i=0;i<body.response.length;i++){
+    //                 var dates=body.response[i].dateTime;
+    //                 dates=dates.split(" ");
+    //                 date=new Date(dates[0]);
+    //                 var newPrice={company:stock[i],date:date,price:body.response[i].price};
+    //                 Prices.create(newPrice,function(err,newEntry){
+    //                     if(err){
+    //                         console.log("New");
+    //                     }
+    //                     else{
+    //                     } 
+    //                 });
+    //                 console.log(newPrice);
+    //             }
+    //         }
+    //     );
+    // },5000);
     console.log("hello");
 })
