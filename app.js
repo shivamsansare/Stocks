@@ -37,14 +37,14 @@ app.get("/display",function(req,res){
 });
 
 app.post("/display",function(req,res){
-    console.log(req.body.date);
     var company=req.body.company;
     company=company.toUpperCase();
-    var newPrice={company:company,date: req.body.date,price: req.body.number};
-    console.log(newPrice);
+    var dates=new Date(req.body.date);
+    var date=new Date(dates.getFullYear(),dates.getMonth(),dates.getDate(),0,0,0);
+    var newPrice={company:company,date: date,price: req.body.number};
     Prices.create(newPrice,function(err,newEntry){
         if(err){
-            console.log("hellp");
+            console.log(err);
         }
         else{
             res.redirect("/display");
@@ -53,11 +53,11 @@ app.post("/display",function(req,res){
 });
 
 app.delete("/delete",function(req,res){
-    var date=req.body.date;
     var company=req.body.company;
     company=company.toUpperCase();
+    var dates=new Date(req.body.date);
+    var date=new Date(dates.getFullYear(),dates.getMonth(),dates.getDate(),0,0,0);
     Prices.findOneAndRemove({company:company,date: date},function(err,sus){
-        console.log(sus);
         if(err){
             console.log(err);
         }
@@ -68,7 +68,6 @@ app.delete("/delete",function(req,res){
 });
 
 app.post("/uploads", upload.single('file'),function(req,res){
-    console.log("here");
     var exceltojson;
     if(req.file.originalname.split('.')[req.file.originalname.split('.').length-1] === 'xlsx'){
         exceltojson = xlsxtojson;
@@ -85,7 +84,6 @@ app.post("/uploads", upload.single('file'),function(req,res){
             if(err) {
                 console.log(err);
             }
-            console.log(result.length);
             var i=0;
             for(i=1;i<result.length;i++){
                 var company=result[i].symbol;
@@ -93,11 +91,9 @@ app.post("/uploads", upload.single('file'),function(req,res){
                 var str=result[i].close;
                 var price=parseFloat(str.replace(/,/g, ""));
                     var newPrice={company:company,date: result[i].date,price:price};
-                    //console.log(newPrice);
                     Prices.create(newPrice,function(err,newEntry){
                     if(err){
-                        //console.log(newEntry);
-                        console.log("Yayay");
+                        console.log(error);
                     }
                     else{
                     } 
@@ -156,7 +152,7 @@ app.delete("/danger/deleteCompany",function(req,res){
 //         url:stockUrl,
 //         json:true
 //         },function(error,response,body){
-            
+                
 //             for(var i=0;i<body.response.length;i++){
 //                 var newPrice={company:"TATA MOTOR",date:body.response[i].tm,price:body.response[i].c};
 //                 Prices.create(newPrice,function(err,newEntry){
@@ -180,22 +176,24 @@ app.get("*",function(req,res){
 
 app.listen(process.env.PORT,process.env.IP,function(req,res){
     // setInterval(function(){
-    //     stockUrl="https://fcsapi.com/api-v2/stock/latest?id=63798,63607,63593,64008,63596,63611&access_key="+keys.key.fcsApiKey;
+    //     stockUrl="https://fcsapi.com/api-v2/stock/latest?id=63593,64008,63596,63607,63611,63798&access_key="+keys.key.fcsApiKey;
     //     request({
     //         url:stockUrl,
     //         json:true
     //         },function(error,response,body){
-    //             var stock=["TATA POWER","SBI","ICICI","IBVENTURES","ITC","TATA MOTOR"];
+    //             var stock=["ICICI","IBVENTURES","ITC","SBI","TATA MOTOR","TATA POWER"];
     //             for(var i=0;i<body.response.length;i++){
-    //                 var dates=body.response[i].dateTime;
-    //                 dates=dates.split(" ");
-    //                 date=new Date(dates[0]);
+    //                 var dated=body.response[i].dateTime;
+    //                 dated=dated.split(" ");
+    //                 var dates=new Date(dated[0]);
+    //                 var date=new Date(dates.getFullYear(),dates.getMonth(),dates.getDate(),0,0,0);
     //                 var newPrice={company:stock[i],date:date,price:body.response[i].price};
     //                 Prices.create(newPrice,function(err,newEntry){
     //                     if(err){
     //                         console.log("New");
     //                     }
     //                     else{
+    //                         console.log(newEntry);
     //                     } 
     //                 });
     //                 console.log(newPrice);
