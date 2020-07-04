@@ -217,6 +217,8 @@
         var companyprice=[];
         price.forEach(function(item){
             company[i]=item.company;
+            // compdate=new Date(item.date);
+            // console.log(compdate);
             companydate[i]=item.date;
             companyprice[i]=item.price;
             i=i+1;
@@ -292,17 +294,32 @@
         }
 
         //console.log(datasets);
-
-       
-    
+        var realDate=[];
+        for(i=0;i<lab.length-1;i++){
+            var inter=new Date(lab[i]);
+            var internext=inter.toDateString();
+            internext=internext.split("G");
+            realDate[i]=internext;
+        }
         var myLineChart = new Chart(ctx, {
             type: 'line',
             data: 
             { 
-                    labels: lab, 
+                    labels: realDate, 
                     datasets: datasets
             }, 
+            options: {
+                scaleShowValues: true,
+                scales: {
+                    xAxes: [{
+                    ticks: {
+                        autoSkip: true,
+                    }
+                    }]
+                }
+}
         });
+        //console.log(myLineChart);
     }
 
     function myGraph(price){
@@ -427,7 +444,13 @@
 
         //console.log(datasets);
 
-       
+        var realDate=[];
+        for(i=1;i<lab.length;i++){
+            var inter=new Date(lab);
+            var internext=inter.toDateString();
+            internext=internext.split("G");
+            realDate[i]=internext;
+        }
     
         var myLineChart = new Chart(ctxm, {
             type: 'line',
@@ -559,11 +582,19 @@
         k++;
         dataset.push(dataFirst);
 
+        var realDate=[];
+        for(i=1;i<companydate.length;i++){
+            var inter=new Date(companydate[i]);
+            var internext=inter.toDateString();
+            internext=internext.split("G");
+            realDate[i]=internext;
+        }
+
         var myLineChart = new Chart(ctxs, {
             type: 'line',
             data: 
             { 
-                    labels: companydate, 
+                    labels: realDate, 
                     datasets: dataset
             }, 
         });
