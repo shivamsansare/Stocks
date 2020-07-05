@@ -158,6 +158,7 @@
                     </thead>
                     <% price.forEach(function(item){ %>
                         <% var inter=new Date(item.date); %>
+                        <% inter.setDate(date.getDate()+1) %>
                         <%  var internext=inter.toDateString(); %>
                         <% internext=internext.split("G"); %>
                         <% var realDate=internext[0]; %>
