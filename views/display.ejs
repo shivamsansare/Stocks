@@ -157,9 +157,13 @@
                         </tr>
                     </thead>
                     <% price.forEach(function(item){ %>
+                        <% var inter=new Date(item.date); %>
+                        <%  var internext=inter.toDateString(); %>
+                        <% internext=internext.split("G"); %>
+                        <% var realDate=internext[0]; %>
                         <tr>
                             <td>
-                                <%= item.date %>
+                                <%= realDate %>
                             </td>
                             <td>
                                 <%= item.price %>

@@ -147,19 +147,22 @@ app.delete("/danger/deleteCompany",function(req,res){
 });
 
 // app.get("/api",function(req,res){
-//     stockUrl="https://fcsapi.com/api-v2/stock/history?id=63611&period=1d&from=2019-12-31T23:00&to=2020-07-05T23:00&access_key="+keys.key.fcsApiKey;
+//     stockUrl="https://fcsapi.com/api-v2/stock/history?id=63798&period=1d&from=2019-12-31T23:00&to=2020-07-05T23:00&access_key="+keys.key.fcsApiKey;
 //     request({
 //         url:stockUrl,
 //         json:true
 //         },function(error,response,body){
                 
 //             for(var i=0;i<body.response.length;i++){
-//                 var newPrice={company:"TATA MOTOR",date:body.response[i].tm,price:body.response[i].c};
+//                 var dates=new Date(body.response[i].tm);
+//                 var date=new Date(dates.getFullYear(),dates.getMonth(),dates.getDate(),0,0,0);
+//                 var newPrice={company:"TATA POWER",date:date,price:body.response[i].c};
 //                 Prices.create(newPrice,function(err,newEntry){
 //                     if(err){
-//                         console.log("New");
+//                         console.log(err);
 //                     }
 //                     else{
+//                         console.log(newEntry);
 //                     } 
 //                 });
 //             }
@@ -181,7 +184,7 @@ app.listen(process.env.PORT,process.env.IP,function(req,res){
     //         url:stockUrl,
     //         json:true
     //         },function(error,response,body){
-    //             var stock=["ICICI","IBVENTURES","ITC","SBI","TATA MOTOR","TATA POWER"];
+    //             var stock=["ICICI","IBVENTURES","ITC","SBI","TATA MOTORS","TATA POWER"];
     //             for(var i=0;i<body.response.length;i++){
     //                 var dated=body.response[i].dateTime;
     //                 dated=dated.split(" ");
