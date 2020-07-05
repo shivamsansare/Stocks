@@ -10,6 +10,7 @@ var express=require("express");
 
 var xlstojson = require("xls-to-json-lc");
 var xlsxtojson = require("xlsx-to-json-lc");
+const { update } = require("./models/prices.js");
 
 mongoose.connect(keys.key.mongoDb);
 
@@ -146,6 +147,37 @@ app.delete("/danger/deleteCompany",function(req,res){
     })
 });
 
+
+
+    // setInterval(function(){
+    //     stockUrl="https://fcsapi.com/api-v2/stock/history?id=1&period=1d&access_key=API_KEY";
+    //     //stockUrl="https://fcsapi.com/api-v2/stock/latest?id=63593,64008,63596,63607,63611,63798&access_key="+keys.key.fcsApiKey;
+    //     request({
+    //         url:stockUrl,
+    //         json:true
+    //         },function(error,response,body){
+    //             var stock=["ICICI","IBVENTURES","ITC","SBI","TATA MOTORS","TATA POWER"];
+    //             for(var i=0;i<body.response.length;i++){
+    //                 var dated=body.response[i].dateTime;
+    //                 dated=dated.split(" ");
+    //                 var dates=new Date(dated[0]);
+    //                 var date=new Date(dates.getFullYear(),dates.getMonth(),dates.getDate(),0,0,0);
+    //                 var newPrice={company:stock[i],date:date,price:body.response[i].price};
+    //                 Prices.create(newPrice,function(err,newEntry){
+    //                     if(err){
+    //                         console.log("New");
+    //                     }
+    //                     else{
+    //                         console.log(newEntry);
+    //                     } 
+    //                 });
+    //                 console.log(newPrice);
+    //             }
+    //         }
+    //     );
+    // },5000);  
+
+
 // app.get("/api",function(req,res){
 //     stockUrl="https://fcsapi.com/api-v2/stock/history?id=63798&period=1d&from=2019-12-31T23:00&to=2020-07-05T23:00&access_key="+keys.key.fcsApiKey;
 //     request({
@@ -171,38 +203,78 @@ app.delete("/danger/deleteCompany",function(req,res){
 //     );
 // });
 
+
+
 app.get("*",function(req,res){
     res.send("Page not available");
 });
 
 //const PORT=5000;
 
-app.listen(process.env.PORT,process.env.IP,function(req,res){
-    // setInterval(function(){
-    //     stockUrl="https://fcsapi.com/api-v2/stock/latest?id=63593,64008,63596,63607,63611,63798&access_key="+keys.key.fcsApiKey;
-    //     request({
-    //         url:stockUrl,
-    //         json:true
-    //         },function(error,response,body){
-    //             var stock=["ICICI","IBVENTURES","ITC","SBI","TATA MOTORS","TATA POWER"];
-    //             for(var i=0;i<body.response.length;i++){
-    //                 var dated=body.response[i].dateTime;
-    //                 dated=dated.split(" ");
-    //                 var dates=new Date(dated[0]);
-    //                 var date=new Date(dates.getFullYear(),dates.getMonth(),dates.getDate(),0,0,0);
-    //                 var newPrice={company:stock[i],date:date,price:body.response[i].price};
-    //                 Prices.create(newPrice,function(err,newEntry){
-    //                     if(err){
-    //                         console.log("New");
-    //                     }
-    //                     else{
-    //                         console.log(newEntry);
-    //                     } 
-    //                 });
-    //                 console.log(newPrice);
-    //             }
-    //         }
-    //     );
-    // },5000);
+app.listen(process.env.PORT,process.env.IP,function(req,res){  
+    setInterval(async function(){
+        var stock=["ICICI","IBVENTURES","ITC","SBI","TATA MOTORS","TATA POWER"];
+        var stockId=["63593","64008","63596","63607","63611","63798"];
+        for(var j=0;j<stock.length;j++){
+            stockUrl="https://fcsapi.com/api-v2/stock/history?id="+stockId[j]+"&period=1d&access_key="+keys.key.fcsApiKey;
+            console.log(j);
+            //stockUrl="https://fcsapi.com/api-v2/stock/history?id="+stockId[j]+"&period=1d&access_key=API_KEY";
+            await settingInterval(stockUrl,j+1);
+        }
+    },86400000);
     console.log("hello");
 })
+
+async function settingInterval(url,j){
+    new Promise(function(resolve, reject){
+        resolve(setTimeout(function() { 
+            callUrl(url); }, 
+            60000*j))
+    })
+}
+
+
+function callUrl(stockUrl){
+    console.log(stockUrl);
+    request({
+        url:stockUrl,
+        json:true
+        },function(error,response,body){
+                console.log("request");
+                updateDatabase(body);
+           }
+    );
+}
+
+function updateDatabase(body){
+    console.log("update");
+    var stock=["ICICI","IBVENTURES","ITC","SBI","TATA MOTORS","TATA POWER"];
+    stockSymbol=["ICBK","INDB","ITC","SBI","TAMO","TTPW"];
+    console.log(body);
+    var i=body.response.length-1;
+    var dated=body.response[i].tm;
+    dated=dated.split(" ");
+    var dates=new Date(dated[0]);
+    var date=new Date(dates.getFullYear(),dates.getMonth(),dates.getDate(),0,0,0);
+    var company=stock[stockSymbol.indexOf(body.info.symbol)];
+    var newPrice={company:company,date:date,price:body.response[i].c};
+    console.log(newPrice);
+    Prices.findOne(newPrice,function(err,newFind){
+        if(newFind){
+            console.log("present");
+        }
+        else{
+            Prices.create(newPrice,function(err,newEntry){
+                if(err){
+                    console.log("None");
+                }
+                else{
+                    console.log(newEntry);
+                } 
+            });
+        }
+    });
+
+}
+
+//stockUrl="https://fcsapi.com/api-v2/stock/latest?id=63593,64008,63596,63607,63611,63798&access_key="+keys.key.fcsApiKey;
