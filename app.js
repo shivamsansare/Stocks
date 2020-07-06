@@ -196,17 +196,21 @@ app.get("/api",function(req,res){
         }
     });
 });
+var temp=0;
 
 app.post("/api",function(req,res){
     var id=req.body.number.toString();
     var sym=req.body.symbol.toUpperCase();
     var comp=req.body.company.toUpperCase();
-    var stockUrl="https://fcsapi.com/api-v2/stock/history?id="+id+"&period=1d&from=2019-12-31T23:00&to="+req.body.date+"T23:00&access_key="+keys.key.fcsApiKey;
+    var stockUrl="https://fcsapi.com/api-v2/stock/history?id="+id+"&period=1d&from=2019-12-31T23:00&to="+req.body.date+"T23:00&access_key="+keys.key.fcsApiKey2;
     console.log(stockUrl);
     addingCompany(id,sym,comp);
-    callApi(stockUrl);
+    temp=comp;
+    console.log(temp);
+    callApi(stockUrl,temp);
     res.redirect("/display");
 });
+
 
 function addingCompany(id,sym,comp){
     var add={id:id,symbol:sym,company:comp};
@@ -222,33 +226,37 @@ function addingCompany(id,sym,comp){
 }
 
 
-function callApi(stockUrl){
+function callApi(stockUrl,temp){
     console.log(stockUrl);
+    console.log(temp);
     request({
         url:stockUrl,
         json:true
         },function(error,response,body){
                 console.log("request");
-                newCompany(body);
+                newCompany(body,temp);
            }
     );
 }
 
-function newCompany(body){
+function newCompany(body,temp){
     console.log("new Company");
-    for(var i=0;i<body.response.length;i++){
-        var dates=new Date(body.response[i].tm);
-        var date=new Date(dates.getFullYear(),dates.getMonth(),dates.getDate(),0,0,0);
-        var newPrice={company:stock[stock.length-1],date:date,price:body.response[i].c};
-        console.log(newPrice);
-        Prices.create(newPrice,function(err,newEntry){
-            if(err){
-                console.log(err);
-            }
-            else{
-                //console.log(newEntry);
-            } 
-        });
+    if(body.status==true){
+        for(var i=0;i<body.response.length;i++){
+            var dates=new Date(body.response[i].tm);
+            var date=new Date(dates.getFullYear(),dates.getMonth(),dates.getDate(),0,0,0);
+            //console.log(temp);
+            var newPrice={company:temp,date:date,price:body.response[i].c};
+            //console.log(newPrice);
+            Prices.create(newPrice,function(err,newEntry){
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    //console.log(newEntry);
+                } 
+            });
+        }
     }
 }
 
