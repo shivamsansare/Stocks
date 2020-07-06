@@ -29,7 +29,6 @@
             color: inherit; 
         } 
 
-
         </style>
     </head>
     <body onload="calculate(<%=JSON.stringify(price)%>)">
@@ -39,11 +38,29 @@
                 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
                 <a href="/" class="button btn btn-primary">Back</a>
                 <hr>
-                <a href="#br">
-                    <button class="btn btn-warning" onclick="table()">
-                        Table
-                    </button>
-                </a>
+                <div class="row">
+                    <div class="col-md-6">
+                        
+                    </div>
+                    <div class="col-md-2">
+                        <a href="/api">
+                            <button class="btn btn-primary">
+                                Api
+                            </button>
+                        </a>    
+                    </div>
+                    <div class="col-md-2">
+                        
+                    </div>
+                    <div class="col-md-2">
+                        <a href="#br">
+                            <button class="btn btn-warning" onclick="table()">
+                                Table
+                            </button>
+                        </a>
+                    </div>
+            
+                </div>                    
             </div>
             <br>
             <input type="number" id="number" name="number" placeholder="Group by" required>
