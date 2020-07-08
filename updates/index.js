@@ -9,12 +9,15 @@ var updates={};
 var stockId=[],
     stockSymbol=[],
     stock=[],
+    today=0,
     temp=0;
 
 updates.updateDate=function(){
     today=new Date();
     today=today.toString();
     today=today.split(":")[0].slice(0,-3);
+    console.log(today);
+    return today;
 }
 
 updates.repetativeCall=async function(){

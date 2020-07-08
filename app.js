@@ -19,9 +19,7 @@ var stockId=[],
     stock=[],
     temp=0;
 
-var today=new Date();
-today=today.toString();
-today=today.split(":")[0].slice(0,-3);
+var today=0;
 
 mongoose.connect(keys.key.mongoDb);
 
@@ -43,6 +41,8 @@ app.get("/display",function(req,res){
             console.log(err);
         }
         else{
+            today=updates.updateDate();
+            console.log(today);
             res.render("display",{price:found,today:today});
         }
     });
@@ -219,7 +219,7 @@ app.get("*",function(req,res){
 app.listen(process.env.PORT,process.env.IP,function(req,res){  
 
     setInterval(function(){
-        updates.updateDate();
+        today=updates.updateDate();
         updates.findCompany();
     },3600000);
 
