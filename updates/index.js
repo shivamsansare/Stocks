@@ -4,27 +4,28 @@ var request=require("request"),
     Company=require("../models/company.js"),
     mongoose=require("mongoose");
 
-var updates={};
+var updates={
+    today: 0
+};
 
 var stockId=[],
     stockSymbol=[],
     stock=[],
-    today=0,
     temp=0;
 
+
 updates.updateDate=function(){
-    today=new Date();
-    today=today.toString();
-    today=today.split(":")[0].slice(0,-3);
-    console.log(today);
-    return today;
+    updates.today=new Date();
+    updates.today=updates.today.toString();
+    updates.today=updates.today.split(":")[0].slice(0,-3);
+    // console.log(today);
 }
 
 updates.repetativeCall=async function(){
     for(var j=0;j<stock.length;j++){
         console.log(j);
         var sysDateUTC=new Date();
-        var sysDate=sysDateUTC.getFullYear()+"-"+(sysDateUTC.getMonth()+1)+"-"+sysDateUTC.getDate();
+        var sysDate=sysDateUTC.getFullYear()+"-"+(sysDateUTC.getMonth()+1)+"-"+(sysDateUTC.getDate()-1);
         if(j%2==0){
             stockUrl="https://fcsapi.com/api-v2/stock/history?id="+stockId[j]+"&period=1d&from="+sysDate+"&to="+sysDate+"&access_key="+keys.key.fcsApiKey2;
         }

@@ -19,7 +19,6 @@ var stockId=[],
     stock=[],
     temp=0;
 
-var today=0;
 
 mongoose.connect(keys.key.mongoDb);
 
@@ -41,9 +40,9 @@ app.get("/display",function(req,res){
             console.log(err);
         }
         else{
-            today=updates.updateDate();
-            console.log(today);
-            res.render("display",{price:found,today:today});
+            updates.updateDate();
+            console.log(updates.today);
+            res.render("display",{price:found,today:updates.today});
         }
     });
 });
@@ -219,7 +218,7 @@ app.get("*",function(req,res){
 app.listen(process.env.PORT,process.env.IP,function(req,res){  
 
     setInterval(function(){
-        today=updates.updateDate();
+        updates.updateDate();
         updates.findCompany();
     },3600000);
 
