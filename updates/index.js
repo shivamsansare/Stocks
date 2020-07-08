@@ -25,7 +25,7 @@ updates.repetativeCall=async function(){
     for(var j=0;j<stock.length;j++){
         console.log(j);
         var sysDateUTC=new Date();
-        var sysDate=sysDateUTC.getFullYear()+"-"+(sysDateUTC.getMonth()+1)+"-"+(sysDateUTC.getDate()-1);
+        var sysDate=sysDateUTC.getFullYear()+"-"+(sysDateUTC.getMonth()+1)+"-"+sysDateUTC.getDate();
         if(j%2==0){
             stockUrl="https://fcsapi.com/api-v2/stock/history?id="+stockId[j]+"&period=1d&from="+sysDate+"&to="+sysDate+"&access_key="+keys.key.fcsApiKey2;
         }
