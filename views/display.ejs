@@ -39,7 +39,15 @@
                 <a href="/" class="button btn btn-primary">Back</a>
                 <hr>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-1">
+                        
+                    </div>
+                    <div class="col-md-4">
+                        <b>
+                            <%= today %>
+                        </b>
+                    </div>
+                    <div class="col-md-1">
                         
                     </div>
                     <div class="col-md-2">
@@ -174,14 +182,12 @@
                         </tr>
                     </thead>
                     <% price.forEach(function(item){ %>
-                        <% var inter=new Date(item.date); %>
-                        <% inter.setDate(inter.getDate()+1) %>
-                        <%  var internext=inter.toDateString(); %>
-                        <% internext=internext.split("G"); %>
-                        <% var realDate=internext[0]; %>
+                        <% var inter=item.date.toDateString() %>
+                        <%  inter=inter.split(":"); %>
+                        <% inter=inter[0] %>
                         <tr>
                             <td>
-                                <%= item.date %>
+                                <%= inter %>
                             </td>
                             <td>
                                 <%= item.price %>
@@ -467,8 +473,8 @@
         //console.log(datasets);
 
         var realDate=[];
-        for(i=1;i<lab.length;i++){
-            var inter=new Date(lab);
+        for(i=0;i<lab.length-1;i++){
+            var inter=new Date(lab[i]);
             var internext=inter.toDateString();
             internext=internext.split("G");
             realDate[i]=internext;
@@ -478,7 +484,7 @@
             type: 'line',
             data: 
             { 
-                    labels: lab, 
+                    labels: realDate, 
                     datasets: datasets
             }, 
         });
