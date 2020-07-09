@@ -133,6 +133,10 @@ app.get("/danger",function(req,res){
     res.render("danger");
 });
 
+app.get("/danger/delete",function(req,res){
+    res.render("deleteEverything");
+});
+
 app.delete("/danger/delete",function(req,res){
     Prices.remove({},function(err,del){
         if(err){
@@ -231,6 +235,5 @@ app.get("*",function(req,res){
 //const PORT=5000;
 
 app.listen(process.env.PORT,process.env.IP,function(req,res){  
-
     console.log("hello");
-})
+});
