@@ -21,11 +21,13 @@ updates.updateDate=function(){
     // console.log(today);
 }
 
-updates.repetativeCall=async function(){
+updates.repetativeCall=async function(date){
     for(var j=0;j<stock.length;j++){
         console.log(j);
-        var sysDateUTC=new Date();
+        var sysDateUTC=new Date(date);
         var sysDate=sysDateUTC.getFullYear()+"-"+(sysDateUTC.getMonth()+1)+"-"+sysDateUTC.getDate();
+        console.log("repcall");
+        console.log(sysDate);
         if(j%2==0){
             stockUrl="https://fcsapi.com/api-v2/stock/history?id="+stockId[j]+"&period=1d&from="+sysDate+"&to="+sysDate+"&access_key="+keys.key.fcsApiKey2;
         }

@@ -53,13 +53,20 @@
                 </div>
                 <div class="col-md-3">
                     <form action="/companyList" method="GET">
-                        <button class="btn btn-warning">
+                        <button class="btn btn-danger">
                             Companies
                         </button>
                     </form>
                 </div>
               
             </div>
+            <br>
+            <form action="/update" method="POST">
+                <input type="date" id="date" name="date" required>
+                <button class="btn btn-warning">
+                    Update
+                </button>
+            </form>
             <br>
             <form action="/api" method="POST">
                 <input type="number" id="number" name="number" placeholder="Id" step="any" required>

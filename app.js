@@ -14,6 +14,7 @@ var express=require("express");
     updates=require("./updates/index.js"),
     mongoose=require("mongoose");
 
+
 var stockId=[],
     stockSymbol=[],
     stock=[],
@@ -209,6 +210,21 @@ app.get("/companyList",function(req,res){
 });
 
 
+app.post("/update",function(req,res){
+    
+    setTimeout(function(){
+        updates.updateDate();
+        updates.findCompany();
+    },1*1000);
+
+    setTimeout(async function(){
+        updates.repetativeCall(req.body.date);
+    },5*1000);
+
+    res.redirect("/display");
+});
+
+
 app.get("*",function(req,res){
     res.send("Page not available");
 });
@@ -216,15 +232,6 @@ app.get("*",function(req,res){
 //const PORT=5000;
 
 app.listen(process.env.PORT,process.env.IP,function(req,res){  
-
-    setInterval(function(){
-        updates.updateDate();
-        updates.findCompany();
-    },3600000);
-
-    setInterval(async function(){
-        updates.repetativeCall();
-    },86400000);
 
     console.log("hello");
 })
