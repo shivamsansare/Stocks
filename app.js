@@ -186,7 +186,7 @@ app.post("/api",function(req,res){
     var id=req.body.number.toString();
     var sym=req.body.symbol.toUpperCase();
     var comp=req.body.company.toUpperCase();
-    var stockUrl="https://fcsapi.com/api-v2/stock/history?id="+id+"&period=1d&from=2019-12-31T23:00&to="+req.body.date+"T23:00&access_key="+keys.key.fcsApiKey2;
+    var stockUrl="https://fcsapi.com/api-v2/stock/history?id="+id+"&period=1d&from=2019-12-31&to="+req.body.date+"&access_key="+keys.key.fcsApiKey2;
     console.log(stockUrl);
     updates.addingCompany(id,sym,comp);
     temp=comp;
@@ -211,7 +211,6 @@ app.get("/companyList",function(req,res){
 
 
 app.post("/update",function(req,res){
-    
     setTimeout(function(){
         updates.updateDate();
         updates.findCompany();
